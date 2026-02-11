@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colby Reardon Drone Co.</title>
+<title>SkyView Drone Co.</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -23,9 +23,7 @@
   font-family:'Poppins', sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background:#05070d;
@@ -49,11 +47,12 @@ header {
 .hero-bg {
   position:absolute;
   inset:0;
-  background:url("drone.jpeg") center/cover no-repeat;
+  background:url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2070&auto=format&fit=crop") center/cover no-repeat;
   transform:scale(1.25);
-  z-index:-5;
+  z-index:1;
   will-change: transform;
   transition: transform .4s ease-out;
+  pointer-events:none;
 }
 
 /* Dark overlay */
@@ -61,7 +60,8 @@ header {
   position:absolute;
   inset:0;
   background:linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.85));
-  z-index:-4;
+  z-index:2;
+  pointer-events:none;
 }
 
 /* Volumetric sun beams */
@@ -80,7 +80,8 @@ header {
       transparent 80%);
   filter: blur(60px);
   animation: spinBeams 40s linear infinite;
-  z-index:-3;
+  z-index:3;
+  pointer-events:none;
 }
 
 @keyframes spinBeams {
@@ -92,8 +93,8 @@ header {
 .particles {
   position:absolute;
   inset:0;
+  z-index:4;
   pointer-events:none;
-  z-index:-2;
 }
 
 .particles span {
@@ -106,14 +107,10 @@ header {
   animation: floatUp linear infinite;
 }
 
-@keyframes floatUp {
-  from { transform: translateY(100vh) scale(.4); opacity:0; }
-  10% { opacity:.6; }
-  to { transform: translateY(-120vh) scale(1.1); opacity:0; }
-}
-
 /* Vision OS liquid glass */
 .glass {
+  position:relative;
+  z-index:10; /* FORCE ABOVE EVERYTHING */
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   background: linear-gradient(135deg,
@@ -136,29 +133,6 @@ header {
   box-shadow:
     0 30px 80px rgba(0,0,0,.75),
     inset 0 0 60px rgba(255,255,255,.12);
-}
-
-/* Liquid ripple hover effect */
-.ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.ripple::after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background: radial-gradient(circle at center,
-    rgba(255,255,255,.35),
-    transparent 70%);
-  opacity:0;
-  transform: scale(.6);
-  transition: opacity .6s ease, transform .6s ease;
-}
-
-.ripple:hover::after {
-  opacity:.35;
-  transform: scale(1.2);
 }
 
 /* Hero text */
@@ -196,6 +170,8 @@ header p {
 /* ================= SECTIONS ================= */
 
 section {
+  position:relative;
+  z-index:5;
   padding:7rem 2rem;
   max-width:1200px;
   margin:auto;
@@ -318,19 +294,19 @@ footer {
   <div class="sun-beams"></div>
   <div class="particles" id="particles"></div>
 
-  <div class="glass ripple">
+  <div class="glass">
     <h1>SkyView Drone Co.</h1>
     <p>Ultra-cinematic aerial visuals for real estate, commercial, and events.</p>
-    <a href="#contact"><button class="btn ripple">Book a Flight</button></a>
+    <a href="#contact"><button class="btn">Book a Flight</button></a>
   </div>
 </header>
 
 <section>
   <h2>Services</h2>
   <div class="services">
-    <div class="card ripple"><h3>Real Estate</h3><p>Elevated property visuals that sell faster.</p></div>
-    <div class="card ripple"><h3>Construction</h3><p>Progress tracking & site documentation.</p></div>
-    <div class="card ripple"><h3>Cinematic Film</h3><p>Commercial-grade aerial storytelling.</p></div>
+    <div class="card"><h3>Real Estate</h3><p>Elevated property visuals that sell faster.</p></div>
+    <div class="card"><h3>Construction</h3><p>Progress tracking & site documentation.</p></div>
+    <div class="card"><h3>Cinematic Film</h3><p>Commercial-grade aerial storytelling.</p></div>
   </div>
 </section>
 
@@ -347,12 +323,12 @@ footer {
 
 <section id="contact">
   <h2>Contact</h2>
-  <div class="contact-box glass ripple">
+  <div class="contact-box glass">
     <form id="contact-form">
       <input type="text" name="user_name" placeholder="Your Name" required>
       <input type="email" name="user_email" placeholder="Your Email" required>
       <textarea name="message" placeholder="Tell us about your project..." required></textarea>
-      <button class="btn ripple" type="submit">Send Message</button>
+      <button class="btn" type="submit">Send Message</button>
     </form>
     <p id="status" style="margin-top:1rem;"></p>
   </div>
@@ -406,7 +382,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e){
 
   emailjs.sendForm("service_9yt72af","template_k9h1kyb",this)
     .then(() => {
-      status.textContent = "Message sent successfully.";
+      status.textContent = "Message sent successfully!";
       this.reset();
     }, () => {
       status.textContent = "Failed to send. Try again.";
