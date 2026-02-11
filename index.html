@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyView Drone Co.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<style>
+:root {
+  --glass-bg: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.15);
+  --accent: #00f2ff;
+  --text: #ffffff;
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
+body {
+  background:#05070d;
+  color:var(--text);
+  overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+
+header {
+  position:relative;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* YOUR DRONE BACKGROUND IMAGE HERE */
+.hero-bg {
+  position:absolute;
+  inset:0;
+  background:url("INSERT-YOUR-DRONE-PHOTO-HERE.jpg") center/cover no-repeat;
+  transform:scale(1.2);
+  z-index:-3;
+}
+
+/* Dark overlay */
+.hero-overlay {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom, rgba(0,0,0,.4), rgba(0,0,0,.85));
+  z-index:-2;
+}
+
+/* Light Rays */
+.light-rays {
+  position:absolute;
+  inset:-50%;
+  background:radial-gradient(circle at 50% 50%, rgba(0,242,255,.15), transparent 60%);
+  animation:rotateRays 25s linear infinite;
+  z-index:-1;
+  filter:blur(60px);
+}
+
+@keyframes rotateRays {
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+}
+
+/* Liquid Glass Card */
+.glass {
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  border-radius:30px;
+  padding:3rem;
+  max-width:750px;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.6),
+    inset 0 0 40px rgba(255,255,255,.05);
+}
+
+header h1 {
+  font-size:clamp(2.5rem,5vw,4rem);
+  margin-bottom:1rem;
+  font-weight:700;
+}
+
+header p {
+  color:#cfd8ff;
+  margin-bottom:2rem;
+}
+
+.btn {
+  padding:1rem 2rem;
+  border-radius:999px;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+  background:linear-gradient(135deg,#00f2ff,#0077ff);
+  color:black;
+  box-shadow:0 10px 30px rgba(0,242,255,.5);
+  transition:.3s;
+}
+
+.btn:hover {
+  transform:translateY(-3px);
+  box-shadow:0 15px 40px rgba(0,242,255,.7);
+}
+
+/* ================= SECTIONS ================= */
+
+section {
+  padding:6rem 2rem;
+  max-width:1200px;
+  margin:auto;
+}
+
+h2 {
+  text-align:center;
+  font-size:2.2rem;
+  margin-bottom:3rem;
+}
+
+/* Glass Cards */
+.card {
+  backdrop-filter:blur(18px);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  padding:2rem;
+  border-radius:25px;
+  transition:.3s;
+}
+
+.card:hover {
+  transform:translateY(-6px);
+  box-shadow:0 15px 50px rgba(0,242,255,.15);
+}
+
+.services {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:2rem;
+}
+
+/* Gallery */
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1.5rem;
+}
+
+.gallery img {
+  border-radius:20px;
+  height:230px;
+  object-fit:cover;
+  transition:.4s;
+  cursor:pointer;
+}
+
+.gallery img:hover {
+  transform:scale(1.05);
+}
+
+/* Contact */
+.contact-box {
+  max-width:650px;
+  margin:auto;
+}
+
+form {
+  display:grid;
+  gap:1rem;
+}
+
+input, textarea {
+  padding:1rem;
+  border-radius:15px;
+  border:none;
+  background:rgba(255,255,255,.08);
+  color:white;
+}
+
+textarea {
+  min-height:140px;
+  resize:none;
+}
+
+footer {
+  text-align:center;
+  padding:2rem;
+  color:#9aa4b2;
+  font-size:.9rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="light-rays"></div>
+
+  <div class="glass">
+    <h1>SkyView Drone Co.</h1>
+    <p>Luxury cinematic aerial visuals for real estate, commercial, and events.</p>
+    <a href="#contact"><button class="btn">Book a Flight</button></a>
+  </div>
+</header>
+
+<section>
+  <h2>Services</h2>
+  <div class="services">
+    <div class="card"><h3>Real Estate</h3><p>Elevated property visuals that sell faster.</p></div>
+    <div class="card"><h3>Construction</h3><p>Progress tracking & site documentation.</p></div>
+    <div class="card"><h3>Cinematic Film</h3><p>Commercial-grade aerial storytelling.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Flight Gallery</h2>
+  <div class="gallery">
+    <!-- INSERT YOUR DRONE PHOTOS BELOW -->
+    <img src="INSERT-PHOTO-1.jpg">
+    <img src="INSERT-PHOTO-2.jpg">
+    <img src="INSERT-PHOTO-3.jpg">
+    <img src="INSERT-PHOTO-4.jpg">
+  </div>
+</section>
+
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="contact-box glass">
+    <form id="contact-form">
+      <input type="text" name="user_name" placeholder="Your Name" required>
+      <input type="email" name="user_email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Tell us about your project..." required></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+    <p id="status" style="margin-top:1rem;"></p>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> SkyView Drone Co.
+</footer>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* Smooth Parallax */
+window.addEventListener("scroll", () => {
+  const bg = document.querySelector(".hero-bg");
+  bg.style.transform = `translateY(${window.scrollY * 0.4}px) scale(1.2)`;
+});
+
+/* EMAILJS SETUP */
+(function(){
+  emailjs.init("YOUR_PUBLIC_KEY");
+})();
+
+document.getElementById("contact-form").addEventListener("submit", function(e){
+  e.preventDefault();
+  const status = document.getElementById("status");
+  status.textContent = "Sending...";
+
+  emailjs.sendForm("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",this)
+  .then(() => {
+    status.textContent = "Message sent successfully!";
+    this.reset();
+  }, () => {
+    status.textContent = "Failed to send. Please try again.";
+  });
+});
+</script>
+
+</body>
+</html>
