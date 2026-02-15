@@ -134,7 +134,8 @@ header p {
   color:black;
   box-shadow:0 12px 40px rgba(0,242,255,.5);
   transition: transform .4s cubic-bezier(.22,1,.36,1),
-              box-shadow .4s cubic-bezier(.22,1,.36,1);
+              box-shadow .4s cubic-bezier(.22,1,.36,1),
+              background .3s ease;
 }
 
 .btn:hover {
@@ -142,6 +143,7 @@ header p {
   box-shadow:0 18px 60px rgba(0,242,255,.75);
 }
 
+/* ================= SECTIONS ================= */
 section {
   position:relative;
   z-index:5;
@@ -214,6 +216,7 @@ h2 {
 .contact-box {
   max-width:650px;
   margin:auto;
+  transition: transform .5s ease, opacity .5s ease;
 }
 
 form {
@@ -248,13 +251,6 @@ footer {
   font-size:.9rem;
 }
 
-@media only screen and (max-width: 768px) {
-  .hero-bg {
-    background: url("data:image/jpeg;base64,...") center center no-repeat;
-    background-size: cover;
-  }
-}
-
 /* ================= WAITLIST ================= */
 .waitlist-card {
   margin-top:2rem;
@@ -265,6 +261,32 @@ footer {
   border:1px solid rgba(255,255,255,.18);
   border-radius:26px;
   font-size:1.2rem;
+  opacity:0;
+  transform: translateY(20px);
+  transition: all .6s ease;
+}
+
+.waitlist-card.show {
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* ================= BUBBLE ANIMATION ================= */
+.bubble {
+  position:absolute;
+  border-radius:50%;
+  background: rgba(0,242,255,0.3);
+  backdrop-filter: blur(20px);
+  pointer-events:none;
+  z-index:50;
+  transform: scale(0);
+  transition: all 0.8s cubic-bezier(.22,1,.36,1);
+}
+
+.bubble.expand {
+  border-radius:26px;
+  transform: scale(1);
+  opacity:1;
 }
 </style>
 </head>
@@ -301,14 +323,14 @@ footer {
 
 <section id="contact">
   <h2>Contact Us</h2>
-  <div class="contact-box glass">
+  <div class="contact-box glass" id="contact-box">
     <form id="contact-form">
       <input type="text" name="name" placeholder="Your Name" required>
       <input type="email" name="email" placeholder="Your Email" required>
       <textarea name="message" placeholder="Your Message" required></textarea>
       <button type="submit" class="btn">Join Waitlist</button>
     </form>
-    <div class="waitlist-card" id="waitlist-message" style="display:none;"></div>
+    <div class="waitlist-card" id="waitlist-message"></div>
   </div>
 </section>
 
@@ -329,28 +351,47 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 sections.forEach(section => observer.observe(section));
 
-// Waitlist handling
+// Waitlist handling with bubble animation
 const form = document.getElementById("contact-form");
 const waitlistMessage = document.getElementById("waitlist-message");
+const contactBox = document.getElementById("contact-box");
 
 // Get stored position
 let position = localStorage.getItem("waitlistPosition");
 if (position) {
-  waitlistMessage.style.display = "block";
-  waitlistMessage.textContent = `You are number ${position} in line. Do not worry, we will get back to you soon.`;
+  waitlistMessage.textContent = `You are number ${position} in line. We will get back to you soon.`;
+  waitlistMessage.classList.add("show");
 }
 
 form.addEventListener("submit", function(e){
   e.preventDefault();
-  if(!position) {
-    // Increment waitlist
-    position = localStorage.getItem("waitlistPositionGlobal") || 0;
-    position = parseInt(position) + 1;
-    localStorage.setItem("waitlistPosition", position);
-    localStorage.setItem("waitlistPositionGlobal", position);
-  }
-  waitlistMessage.style.display = "block";
-  waitlistMessage.textContent = `You are number ${position} in line. Do not worry, we will get back to you soon.`;
+  
+  // Bubble element
+  const bubble = document.createElement("div");
+  bubble.classList.add("bubble");
+  document.body.appendChild(bubble);
+  
+  const rect = contactBox.getBoundingClientRect();
+  bubble.style.width = `${rect.width}px`;
+  bubble.style.height = `${rect.height}px`;
+  bubble.style.left = `${rect.left}px`;
+  bubble.style.top = `${rect.top}px`;
+
+  // Trigger animation
+  setTimeout(() => bubble.classList.add("expand"), 50);
+
+  // After animation ends, show waitlist card inside
+  bubble.addEventListener("transitionend", () => {
+    bubble.remove();
+    if(!position) {
+      position = localStorage.getItem("waitlistPositionGlobal") || 0;
+      position = parseInt(position) + 1;
+      localStorage.setItem("waitlistPosition", position);
+      localStorage.setItem("waitlistPositionGlobal", position);
+    }
+    waitlistMessage.textContent = `You are number ${position} in line. We will get back to you soon.`;
+    waitlistMessage.classList.add("show");
+  });
 
   // Send email via EmailJS
   emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form)
