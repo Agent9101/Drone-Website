@@ -327,6 +327,7 @@ footer {
     <form id="contact-form">
       <input type="text" name="name" placeholder="Your Name" required>
       <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
       <button type="submit" class="btn">Join Waitlist</button>
     </form>
     <div class="waitlist-card" id="waitlist-message"></div>
@@ -350,7 +351,7 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.1 });
 sections.forEach(section => observer.observe(section));
 
-// Waitlist handling with Google Sheets
+// Waitlist bubble animation & email sending
 const form = document.getElementById("contact-form");
 const waitlistMessage = document.getElementById("waitlist-message");
 const contactBox = document.getElementById("contact-box");
@@ -362,15 +363,18 @@ if (position) {
   waitlistMessage.classList.add("show");
 }
 
-form.addEventListener("submit", async function(e){
+form.addEventListener("submit", function(e){
   e.preventDefault();
-  
+
   const name = form.name.value;
   const email = form.email.value;
+  const message = form.message.value;
+
+  // Create bubble
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
   document.body.appendChild(bubble);
-  
+
   const rect = contactBox.getBoundingClientRect();
   bubble.style.width = `${rect.width}px`;
   bubble.style.height = `${rect.height}px`;
@@ -381,26 +385,21 @@ form.addEventListener("submit", async function(e){
 
   bubble.addEventListener("transitionend", () => {
     bubble.remove();
-    if(!position) position = 0;
+    // Update local position
+    if(!position) position = 1;
+    else position = parseInt(position)+1;
+    localStorage.setItem("waitlistPosition", position);
 
-    // Send data to Google Sheets web app
-    fetch("https://script.google.com/macros/s/AKfycbzy4m1r-oqZtjo1b9vHAopgIDHf6mz5GYXCiU904K5II-stERUycg7u7IZ9UMaqJEz2UQ/exec", {
-      method: "POST",
-      body: JSON.stringify({ name, email }),
-      headers: { "Content-Type": "application/json" }
-    })
-    .then(res => res.json())
-    .then(data => {
-      position = data.position;
-      localStorage.setItem("waitlistPosition", position);
-      waitlistMessage.textContent = `You are number ${position} in line. We will get back to you soon.`;
-      waitlistMessage.classList.add("show");
-    })
-    .catch(err => console.error(err));
+    waitlistMessage.textContent = `You are number ${position} in line. We will get back to you soon.`;
+    waitlistMessage.classList.add("show");
 
-    // Optional: send email via EmailJS
-    emailjs.sendForm('service_9yt72af', 'template_k9h1kyb', form)
-      .then(() => form.reset())
+    // Send via EmailJS
+    emailjs.send('service_9yt72af','template_k9h1kyb',{
+      name: name,
+      email: email,
+      message: message,
+      timestamp: new Date().toLocaleString()
+    }).then(() => form.reset())
       .catch(err => console.error(err));
   });
 });
