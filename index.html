@@ -327,12 +327,16 @@ footer {
   overflow: hidden;
   position: relative;
   width: 100%;
+  background: transparent;
+  padding: 0;
 }
 
 .testimonials-track {
   display: flex;
   gap: 1.8rem;
   animation: scrollTestimonialsRight 20s linear infinite;
+  padding: 1rem 0;
+  background: transparent;
 }
 
 @keyframes scrollTestimonialsRight {
@@ -343,17 +347,12 @@ footer {
 .testimonials-track .card {
   min-width: 250px;
   flex-shrink: 0;
-
   backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.05); /* soft glass effect */
-  border: none; /* removes black edges */
+  background: rgba(255, 255, 255, 0.05); /* soft glass */
   border-radius: 22px;
   padding: 1.8rem;
-  box-shadow: 0 8px 30px rgba(0,242,255,0.1); /* soft glow instead of black */
+  box-shadow: 0 8px 30px rgba(0,242,255,0.1); /* subtle glow */
   color: #ffffff;
-  transition: transform 0.5s cubic-bezier(.22,1,.36,1),
-              box-shadow 0.5s cubic-bezier(.22,1,.36,1),
-              background 0.5s ease;
 }
 /* ================= MOBILE STYLES ================= */
 @media only screen and (max-width: 768px) {
