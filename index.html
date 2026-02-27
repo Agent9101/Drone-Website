@@ -204,9 +204,10 @@ h2 {
 }
 
 .gallery img {
-  border-radius:22px;
-  height:240px;
+  width:100%;
+  aspect-ratio: 4 / 3;   /* keeps consistent shape */
   object-fit:cover;
+  border-radius:22px;
   transition: transform .6s cubic-bezier(.22,1,.36,1),
               box-shadow .6s cubic-bezier(.22,1,.36,1),
               filter .6s ease;
