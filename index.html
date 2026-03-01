@@ -43,12 +43,14 @@ header {
 }
 
 .hero-bg {
-  background: url("hero.jpeg")
-              center 25% no-repeat;
-
+  position: absolute;
+  inset: 0;
+  background: url("hero.jpeg") center center no-repeat;
   background-size: cover;
-
-  transform: scale(1.7);
+  z-index: 1;
+  will-change: transform;
+  transition: transform .6s ease;
+  pointer-events: none;
 }
 
 /* Dark overlay */
@@ -354,10 +356,14 @@ footer {
 }
 /* ================= MOBILE STYLES ================= */
 @media only screen and (max-width: 768px) {
-  .hero-bg {
-    background url("hero.jpeg") center center no-repeat;
-    background-size: contain;
-  }
+ .hero-bg {
+  background-image: url("hero.jpeg");
+  background-position: center 25%;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  transform: scale(1.6);
+}
 
   .gallery {
     justify-items: center; /* center images on mobile */
