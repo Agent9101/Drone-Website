@@ -43,14 +43,12 @@ header {
 }
 
 .hero-bg {
-  position: absolute;
-  inset: 0;
-  background: url("hero.jpeg") center center no-repeat;
+  background: url("hero.jpeg")
+              center 25% no-repeat;
+
   background-size: cover;
-  z-index: 1;
-  will-change: transform;
-  transition: transform .6s ease;
-  pointer-events: none;
+
+  transform: scale(1.7);
 }
 
 /* Dark overlay */
